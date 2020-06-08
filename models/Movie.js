@@ -2,10 +2,12 @@ import mongoose from 'mongoose'
 
 export const Movie = mongoose.model('Movie', {
   title: String,
+  imageUrl: String,
+  imageID: String,
   originalTitle: String,
   director: String,
   country: String,
-  ProductionYear: Number,
+  productionYear: Number,
   duration: Number,
   language: String,
   synopsis: String,
