@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 import cloudinaryFramework from 'cloudinary'
 import multer from 'multer'
 import cloudinaryStorage from 'multer-storage-cloudinary'
-import { Movie } from './models/Movie'
+//import { Movie } from './models/Movie'
 
 dotenv.config()
 
@@ -43,7 +43,6 @@ const storage = cloudinaryStorage({
 })
 const parser = multer({ storage })
 
-
 // Start defining your routes here
 app.get('/movies', (req, res) => {
   Movie.find().then(movies => res.json(movies))
@@ -56,25 +55,46 @@ app.post('/movies', async (req, res) => {
 })
 
 app.post('/rexMovies', parser.single('image'), async (req, res) => {
-  console.log(req.file)
-  res.send('yay')
-  //res.json({ imageUrl: req.file.path, imageId: req.file.filename })
+  res.json({ imageUrl: req.file.path, imageId: req.file.filename })
 })
 
-app.get('/:title', (req, res)   => {
-  Movie.findOne({title: req.params.title}).then(movie => {
-    if(movie) {
-      res.json(movie)
-    } else {
-      res.status(404).json({ error: 'Could not find a movie with that title' })
-    }
-  })
-}) 
+const MovieImage = mongoose.model('MovieImage', {
+  name: String,
+  imageUrl: String,
+  imageID: String,
+})
+
+app.post('/rexMovies', parser.single('image'), async (req, res) => {
+  try {
+    const movieImage = await new MovieImage({ 
+      name: req.body.filename, 
+      imageUrl: req.file.path 
+    }).save()
+    res.json(movieImage)
+  } catch (err) {
+    res.status(400).json({ errors: err.errors })
+  }
+})
+
+
+const Movie = mongoose.model('Movie', {
+  title: String,
+  imageUrl: String,
+  imageID: String,
+  originalTitle: String,
+  director: String,
+  country: String,
+  productionYear: Number,
+  duration: Number,
+  language: String,
+  synopsis: String,
+}
+)
 
 Movie.deleteMany().then(() => {
   new Movie({
     title: 'A Man Is Dead',
-    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591635051/rexMovies/pykfwcmqkx2iljlpyphy.jpg',
+    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591636578/rexMovies/dl6tjcc9kd9puvmkbmpi.jpg',
     imageID: 'rexMovies/pykfwcmqkx2iljlpyphy',
     originalTitle: 'Un Homme est Mort',
     director: 'Olivier Cossu',
@@ -86,6 +106,8 @@ Movie.deleteMany().then(() => {
   }).save()
   new Movie({
     title: 'Buñuel in the Labyrinth of the Turtles',
+    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591700786/rexMovies/usamqt0ofqbjpokvw4qm.jpg',
+    imageID: 'rexMovies/usamqt0ofqbjpokvw4qm',
     originalTitle: 'Buñuel en el laberinto de las tortugas',
     director: 'Salvador Simó',
     country: 'Spain',
@@ -96,6 +118,8 @@ Movie.deleteMany().then(() => {
   }).save()
   new Movie({
     title: 'Between the Shadows',
+    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591700874/rexMovies/j4ed4w1uchvopy0cq4un.jpg',
+    imageID: 'rexMovies/j4ed4w1uchvopy0cq4un',
     originalTitle: '',
     director: 'Mónica Santos, Alice Guimarães',
     country: 'Portugal, Spain',
@@ -106,6 +130,8 @@ Movie.deleteMany().then(() => {
   }).save()
   new Movie({
     title: 'Nine Lives',
+    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591695289/rexMovies/w23z4jpiwbirbgczbpap.png',
+    imageID: 'rexMovies/w23z4jpiwbirbgczbpap',
     originalTitle: '',
     director: 'Vojtěch Papp',
     country: 'Czech Republic ',
