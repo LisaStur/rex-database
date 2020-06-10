@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
 
 export const Movie = mongoose.model('Movie', {
+  movieId: Number,
   title: String,
   imageUrl: String,
   imageID: String,
