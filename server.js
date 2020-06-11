@@ -45,7 +45,7 @@ app.get('/movies', (req, res) => {
   Movie.find().then(movies => res.json(movies))
 })
 
-app.get('/:title', (req,res) => {
+app.get('/movies/:title', (req,res) => {
   Movie.findOne({title: req.params.title}).then(movie => {
     if (movie) {
       res.json(movie)
@@ -87,7 +87,6 @@ app.post('/rexMovies', parser.single('image'), async (req, res) => {
 
 
 const Movie = mongoose.model('Movie', {
-  movieId: Number,
   title: String,
   imageUrl: String,
   imageID: String,
@@ -103,7 +102,6 @@ const Movie = mongoose.model('Movie', {
 
 Movie.deleteMany().then(() => {
   new Movie({
-    movieId: 20201,
     title: 'A Man Is Dead',
     imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591636578/rexMovies/dl6tjcc9kd9puvmkbmpi.jpg',
     imageID: 'rexMovies/pykfwcmqkx2iljlpyphy',
@@ -116,7 +114,6 @@ Movie.deleteMany().then(() => {
     synopsis: 'Brest, 1950. Post-war reconstruction efforts in France have led to poor working conditions. The workers are on strike calling in vain for higher wages. P’tit Zef, Édouard (Mazé), and Désiré take part in demonstrations organized by the CGT syndicate when the situation suddenly becomes violent. The police shoot into the crowd and a bullet hits Édouard. The labor union calls upon the filmmaker René Vautier to film the events. P’tit Zef and Désiré accompany Vautier through the devastated city. Having at his side a man whose only weapon is a camera, P’tit Zef is consumed with anger. He wants revenge for the death of his friend.'
   }).save()
   new Movie({
-    movieId: 20202,
     title: 'Buñuel in the Labyrinth of the Turtles',
     imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591700786/rexMovies/usamqt0ofqbjpokvw4qm.jpg',
     imageID: 'rexMovies/usamqt0ofqbjpokvw4qm',
@@ -129,7 +126,6 @@ Movie.deleteMany().then(() => {
     synopsis: 'Natália, trapped in a tedious job, engages in a search for a stolen heart. In a world where hearts can be deposited in a bank, the protagonist faces a dilemma: give her heart or keep it to herself.'
   }).save()
   new Movie({
-    movieId: 20203,
     title: 'Between the Shadows',
     imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591700874/rexMovies/j4ed4w1uchvopy0cq4un.jpg',
     imageID: 'rexMovies/j4ed4w1uchvopy0cq4un',
@@ -142,7 +138,6 @@ Movie.deleteMany().then(() => {
     synopsis: 'Natália, trapped in a tedious job, engages in a search for a stolen heart. In a world where hearts can be deposited in a bank, the protagonist faces a dilemma: give her heart or keep it to herself.'
   }).save()
   new Movie({
-    movieId: 20204,
     title: 'Nine Lives',
     imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591695289/rexMovies/w23z4jpiwbirbgczbpap.png',
     imageID: 'rexMovies/w23z4jpiwbirbgczbpap',
