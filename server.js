@@ -45,7 +45,7 @@ app.get('/movies', (req, res) => {
   Movie.find().then(movies => res.json(movies))
 })
 
-app.get('/movies/:title', (req,res) => {
+app.get('/movies/title/:title', (req,res) => {
   Movie.findOne({title: req.params.title}).then(movie => {
     if (movie) {
       res.json(movie)
@@ -56,6 +56,18 @@ app.get('/movies/:title', (req,res) => {
 
 })
 
+app.get('/movies/section', async (req, res) => {
+
+  const { section } = req.query
+  let entry = await Movie.find()
+  if (section) {
+    entry = entry.filter((entry) => entry.section.toString() === section)
+  }
+  if (entry.length === 0) {
+    res.status(404).send('No title available in this section')
+  }
+  res.json(entry)
+})
 
 app.post('/movies', async (req, res) => {
   const movie = new Movie(req.body)
@@ -97,6 +109,7 @@ const Movie = mongoose.model('Movie', {
   duration: Number,
   language: String,
   synopsis: String,
+  section: String,
 }
 )
 
@@ -111,7 +124,8 @@ Movie.deleteMany().then(() => {
     productionYear: 2018,
     duration: 66,
     language: 'French, English subtitles',
-    synopsis: 'Brest, 1950. Post-war reconstruction efforts in France have led to poor working conditions. The workers are on strike calling in vain for higher wages. P’tit Zef, Édouard (Mazé), and Désiré take part in demonstrations organized by the CGT syndicate when the situation suddenly becomes violent. The police shoot into the crowd and a bullet hits Édouard. The labor union calls upon the filmmaker René Vautier to film the events. P’tit Zef and Désiré accompany Vautier through the devastated city. Having at his side a man whose only weapon is a camera, P’tit Zef is consumed with anger. He wants revenge for the death of his friend.'
+    synopsis: 'Brest, 1950. Post-war reconstruction efforts in France have led to poor working conditions. The workers are on strike calling in vain for higher wages. P’tit Zef, Édouard (Mazé), and Désiré take part in demonstrations organized by the CGT syndicate when the situation suddenly becomes violent. The police shoot into the crowd and a bullet hits Édouard. The labor union calls upon the filmmaker René Vautier to film the events. P’tit Zef and Désiré accompany Vautier through the devastated city. Having at his side a man whose only weapon is a camera, P’tit Zef is consumed with anger. He wants revenge for the death of his friend.',
+    section: 'feature',
   }).save()
   new Movie({
     title: 'Buñuel in the Labyrinth of the Turtles',
@@ -123,7 +137,8 @@ Movie.deleteMany().then(() => {
     productionYear: 2018,
     duration: 88,
     language: 'Spanish with English subtitles',
-    synopsis: 'Natália, trapped in a tedious job, engages in a search for a stolen heart. In a world where hearts can be deposited in a bank, the protagonist faces a dilemma: give her heart or keep it to herself.'
+    synopsis: 'Natália, trapped in a tedious job, engages in a search for a stolen heart. In a world where hearts can be deposited in a bank, the protagonist faces a dilemma: give her heart or keep it to herself.',
+    section: 'feature',
   }).save()
   new Movie({
     title: 'Between the Shadows',
@@ -135,7 +150,8 @@ Movie.deleteMany().then(() => {
     productionYear: 2018,
     duration: 14,
     language: '',
-    synopsis: 'Natália, trapped in a tedious job, engages in a search for a stolen heart. In a world where hearts can be deposited in a bank, the protagonist faces a dilemma: give her heart or keep it to herself.'
+    synopsis: 'Natália, trapped in a tedious job, engages in a search for a stolen heart. In a world where hearts can be deposited in a bank, the protagonist faces a dilemma: give her heart or keep it to herself.',
+    section: 'short',
   }).save()
   new Movie({
     title: 'Nine Lives',
@@ -143,11 +159,38 @@ Movie.deleteMany().then(() => {
     imageID: 'rexMovies/w23z4jpiwbirbgczbpap',
     originalTitle: '',
     director: 'Vojtěch Papp',
-    country: 'Czech Republic ',
+    country: 'Czech Republic',
     productionYear: 2019,
     duration: 8,
     language: '',
-    synopsis: "I’m an old, grumpy cat. Everybody hates me and I hate everybody. I hate this day just like all other days. But I think this day will be the last one.Yes, today I will end it all.How hard can it be?"
+    synopsis: "I’m an old, grumpy cat. Everybody hates me and I hate everybody. I hate this day just like all other days. But I think this day will be the last one.Yes, today I will end it all.How hard can it be?",
+    section: 'short',
+  }).save()
+  new Movie({
+    title: 'Dachshund',
+    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1592385326/rexMovies/ofnoxxiz7ageom3rbnqx.jpg',
+    imageID: 'rexMovies/ofnoxxiz7ageom3rbnqx',
+    originalTitle: '',
+    director: 'Julia Ocker',
+    country: 'Germany',
+    productionYear: 2019,
+    duration: 4,
+    language: '',
+    synopsis: "The dachshund doesn’t get why its behind always has to pee.",
+    section: 'kids',
+  }).save()
+  new Movie({
+    title: 'The Kite',
+    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1592385815/rexMovies/wgq6yhj98wacjiz1rrdd.jpg',
+    imageID: 'rexMovies/wgq6yhj98wacjiz1rrdd',
+    originalTitle: '',
+    director: 'Martin Smatana',
+    country: 'Czech Republic, Poland',
+    productionYear: 2019,
+    duration: 13,
+    language: '',
+    synopsis: "Summer is coming to the end, the fruit is growing ripe on the trees. Grandpa gives his grandson a kite. As the boy is tossed around in the air, Grandpa catches him. Then the leaves fall and Grandpa has grown weak. A strong autumn wind carries him off into the cloudy sky. Winter comes, then springtime. A warm breeze brings them together again.",
+    section: 'kids',
   }).save()
 })
 

@@ -11,5 +11,6 @@ export const Movie = mongoose.model('Movie', {
   duration: Number,
   language: String,
   synopsis: String,
+  section: String,
 }
 )
