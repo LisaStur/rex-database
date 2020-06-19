@@ -2,14 +2,13 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import mongoose from 'mongoose'
-import dotenv from 'dotenv'
 import { Movie } from './models/Movie'
 import rexData from './data/rex-movies.json'
 
-dotenv.config()
+
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/rexMovies"
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true  })
 mongoose.Promise = Promise
 
 
