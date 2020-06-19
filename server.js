@@ -3,10 +3,8 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import cloudinaryFramework from 'cloudinary'
-import multer from 'multer'
-import cloudinaryStorage from 'multer-storage-cloudinary'
-//import { Movie } from './models/Movie'
+import { Movie } from './models/Movie'
+import rexData from './data/rex-movies.json'
 
 dotenv.config()
 
@@ -22,6 +20,58 @@ const app = express()
 app.use(cors())
 app.use(bodyParser.json())
 
+if(process.env.RESET_DATABASE) {
+  console.log('Resetting database')
+
+  const seedDatabase = async () => {
+    await Movie.deleteMany({})
+    rexData.forEach(entry=> {
+      new Movie(entry).save()
+    })
+  } 
+  seedDatabase()
+}
+
+
+app.get('/movies', (req, res) => {
+  Movie.find().then(movies => res.json(movies))
+})
+
+app.get('/movies/titles/:title', (req,res) => {
+  Movie.findOne({title: req.params.title}).then(movie => {
+    if (movie) {
+      res.json(movie)
+    } else {
+      res.status(404).json({error: 'Not found'})
+    }
+  })
+
+})
+
+app.get('/movies/section', async (req, res) => {
+  // /movies/section?section=kids
+
+  const { section } = req.query
+  let entry = await Movie.find()
+  if (section) {
+    entry = entry.filter((entry) => entry.section.toString() === section)
+  }
+  if (entry.length === 0) {
+    res.status(404).send('No title available in this section')
+  }
+  res.json(entry)
+})
+
+// Start the server
+app.listen(port, () => {
+  console.log(`Server running on http://localhost:${port}`)
+})
+
+
+/*
+import cloudinaryFramework from 'cloudinary'
+import multer from 'multer'
+import cloudinaryStorage from 'multer-storage-cloudinary'
 
 const cloudinary = cloudinaryFramework.v2
 cloudinary.config({
@@ -39,36 +89,9 @@ const storage = cloudinaryStorage({
   },
 })
 const parser = multer({ storage })
+*/
 
-
-app.get('/movies', (req, res) => {
-  Movie.find().then(movies => res.json(movies))
-})
-
-app.get('/movies/title/:title', (req,res) => {
-  Movie.findOne({title: req.params.title}).then(movie => {
-    if (movie) {
-      res.json(movie)
-    } else {
-      res.status(404).json({error: 'Not found'})
-    }
-  })
-
-})
-
-app.get('/movies/section', async (req, res) => {
-
-  const { section } = req.query
-  let entry = await Movie.find()
-  if (section) {
-    entry = entry.filter((entry) => entry.section.toString() === section)
-  }
-  if (entry.length === 0) {
-    res.status(404).send('No title available in this section')
-  }
-  res.json(entry)
-})
-
+/*
 app.post('/movies', async (req, res) => {
   const movie = new Movie(req.body)
   await movie.save()
@@ -87,115 +110,13 @@ const MovieImage = mongoose.model('MovieImage', {
 
 app.post('/rexMovies', parser.single('image'), async (req, res) => {
   try {
-    const movieImage = await new MovieImage({ 
-      name: req.body.filename, 
-      imageUrl: req.file.path 
+    const movieImage = await new MovieImage({
+      name: req.body.filename,
+      imageUrl: req.file.path
     }).save()
     res.json(movieImage)
   } catch (err) {
     res.status(400).json({ errors: err.errors })
   }
 })
-
-
-const Movie = mongoose.model('Movie', {
-  title: String,
-  imageUrl: String,
-  imageID: String,
-  originalTitle: String,
-  director: String,
-  country: String,
-  productionYear: Number,
-  duration: Number,
-  language: String,
-  synopsis: String,
-  section: String,
-}
-)
-
-Movie.deleteMany().then(() => {
-  new Movie({
-    title: 'A Man Is Dead',
-    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591636578/rexMovies/dl6tjcc9kd9puvmkbmpi.jpg',
-    imageID: 'rexMovies/pykfwcmqkx2iljlpyphy',
-    originalTitle: 'Un Homme est Mort',
-    director: 'Olivier Cossu',
-    country: 'France',
-    productionYear: 2018,
-    duration: 66,
-    language: 'French, English subtitles',
-    synopsis: 'Brest, 1950. Post-war reconstruction efforts in France have led to poor working conditions. The workers are on strike calling in vain for higher wages. P’tit Zef, Édouard (Mazé), and Désiré take part in demonstrations organized by the CGT syndicate when the situation suddenly becomes violent. The police shoot into the crowd and a bullet hits Édouard. The labor union calls upon the filmmaker René Vautier to film the events. P’tit Zef and Désiré accompany Vautier through the devastated city. Having at his side a man whose only weapon is a camera, P’tit Zef is consumed with anger. He wants revenge for the death of his friend.',
-    section: 'feature',
-  }).save()
-  new Movie({
-    title: 'Buñuel in the Labyrinth of the Turtles',
-    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591700786/rexMovies/usamqt0ofqbjpokvw4qm.jpg',
-    imageID: 'rexMovies/usamqt0ofqbjpokvw4qm',
-    originalTitle: 'Buñuel en el laberinto de las tortugas',
-    director: 'Salvador Simó',
-    country: 'Spain',
-    productionYear: 2018,
-    duration: 88,
-    language: 'Spanish with English subtitles',
-    synopsis: 'Natália, trapped in a tedious job, engages in a search for a stolen heart. In a world where hearts can be deposited in a bank, the protagonist faces a dilemma: give her heart or keep it to herself.',
-    section: 'feature',
-  }).save()
-  new Movie({
-    title: 'Between the Shadows',
-    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591700874/rexMovies/j4ed4w1uchvopy0cq4un.jpg',
-    imageID: 'rexMovies/j4ed4w1uchvopy0cq4un',
-    originalTitle: '',
-    director: 'Mónica Santos, Alice Guimarães',
-    country: 'Portugal, Spain',
-    productionYear: 2018,
-    duration: 14,
-    language: '',
-    synopsis: 'Natália, trapped in a tedious job, engages in a search for a stolen heart. In a world where hearts can be deposited in a bank, the protagonist faces a dilemma: give her heart or keep it to herself.',
-    section: 'short',
-  }).save()
-  new Movie({
-    title: 'Nine Lives',
-    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1591695289/rexMovies/w23z4jpiwbirbgczbpap.png',
-    imageID: 'rexMovies/w23z4jpiwbirbgczbpap',
-    originalTitle: '',
-    director: 'Vojtěch Papp',
-    country: 'Czech Republic',
-    productionYear: 2019,
-    duration: 8,
-    language: '',
-    synopsis: "I’m an old, grumpy cat. Everybody hates me and I hate everybody. I hate this day just like all other days. But I think this day will be the last one.Yes, today I will end it all.How hard can it be?",
-    section: 'short',
-  }).save()
-  new Movie({
-    title: 'Dachshund',
-    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1592385326/rexMovies/ofnoxxiz7ageom3rbnqx.jpg',
-    imageID: 'rexMovies/ofnoxxiz7ageom3rbnqx',
-    originalTitle: '',
-    director: 'Julia Ocker',
-    country: 'Germany',
-    productionYear: 2019,
-    duration: 4,
-    language: '',
-    synopsis: "The dachshund doesn’t get why its behind always has to pee.",
-    section: 'kids',
-  }).save()
-  new Movie({
-    title: 'The Kite',
-    imageUrl: 'https://res.cloudinary.com/dflx7bg5x/image/upload/v1592385815/rexMovies/wgq6yhj98wacjiz1rrdd.jpg',
-    imageID: 'rexMovies/wgq6yhj98wacjiz1rrdd',
-    originalTitle: '',
-    director: 'Martin Smatana',
-    country: 'Czech Republic, Poland',
-    productionYear: 2019,
-    duration: 13,
-    language: '',
-    synopsis: "Summer is coming to the end, the fruit is growing ripe on the trees. Grandpa gives his grandson a kite. As the boy is tossed around in the air, Grandpa catches him. Then the leaves fall and Grandpa has grown weak. A strong autumn wind carries him off into the cloudy sky. Winter comes, then springtime. A warm breeze brings them together again.",
-    section: 'kids',
-  }).save()
-})
-
-// Start the server
-app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`)
-})
-
+*/
