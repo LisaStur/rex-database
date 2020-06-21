@@ -32,12 +32,15 @@ if(process.env.RESET_DATABASE) {
   seedDatabase()
 }
 
+app.get('/', (req, res) => {
+  res.send('Rex Animation')
+})
 
 app.get('/movies', (req, res) => {
   Movie.find().then(movies => res.json(movies))
 })
 
-app.get('/movies/titles/:title', (req,res) => {
+app.get('/movies/:title', (req,res) => {
   Movie.findOne({title: req.params.title}).then(movie => {
     if (movie) {
       res.json(movie)
