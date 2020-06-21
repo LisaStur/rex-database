@@ -32,7 +32,7 @@ if(process.env.RESET_DATABASE) {
   seedDatabase()
 }
 
-app.get('/', (req, res) => {
+app.get('/',  (req, res) => {
   res.send('Rex Animation')
 })
 
