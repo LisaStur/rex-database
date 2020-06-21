@@ -36,12 +36,12 @@ app.get('/', (req, res) => {
   res.send('Rex Animation')
 })
 
-app.get('/movies', (req, res) => {
-  Movie.find().then(movies => res.json(movies))
+app.get('/movies', async (req, res) => {
+  await Movie.find().then(movies => res.json(movies))
 })
 
-app.get('/movies/:title', (req,res) => {
-  Movie.findOne({title: req.params.title}).then(movie => {
+app.get('/movies/:title', async (req,res) => {
+  await Movie.findOne({title: req.params.title}).then(movie => {
     if (movie) {
       res.json(movie)
     } else {
