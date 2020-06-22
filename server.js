@@ -50,17 +50,14 @@ app.get('/movies/:title', async (req,res) => {
 })
 
 app.get('/section/:section', async (req, res) => {
-const { section } = req.params
-  let entry = await Movie.find()
-  if (section) {
-    entry = entry.filter((entry) => entry.section.toString() === section)
-  }
-  if (entry.length === 0) {
-    res.status(404).send('No title available in this section')
-  }
-  res.json(entry)
-}) 
-
+  await Movie.find({ section: req.params.section }).then(movieSection => {
+    if (movieSection) {
+      res.json(movieSection)
+    } else {
+      res.status(404).json({ error: 'Not found' })
+    }
+  })
+})
 // Start the server
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`)
