@@ -49,19 +49,9 @@ app.get('/movies/:title', async (req,res) => {
   })
 })
 
-app.get('/section', async (req, res) => {
-  // /section?section=kids
-
-  const { section } = req.query
-  let entry = await Movie.find()
-  if (section) {
-    entry = entry.filter((entry) => entry.section.toString() === section)
-  }
-  if (entry.length === 0) {
-    res.status(404).send('No title available in this section')
-  }
-  res.json(entry)
-}) 
+app.get('/section/:section', async (req, res) => {
+  await Movies.findByID({section: req.params.section})
+  .then(movies => res.json(movies))
 
 // Start the server
 app.listen(port, () => {
