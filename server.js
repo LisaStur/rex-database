@@ -9,9 +9,8 @@ import rexData from './data/rex-movies.json'
 dotenv.config()
 
 const mongoUrl = process.env.MONGO_URL || "mongodb://localhost/rexMovies"
-mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true, useCreateIndex: true  })
+mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.Promise = Promise
-
 
 const port = process.env.PORT || 8080
 const app = express()
@@ -48,11 +47,10 @@ app.get('/movies/:title', async (req,res) => {
       res.status(404).json({error: 'Not found'})
     }
   })
-
 })
 
-app.get('/movies/section', async (req, res) => {
-  // /movies/section?section=kids
+app.get('/section', async (req, res) => {
+  // /section?section=kids
 
   const { section } = req.query
   let entry = await Movie.find()
@@ -63,7 +61,7 @@ app.get('/movies/section', async (req, res) => {
     res.status(404).send('No title available in this section')
   }
   res.json(entry)
-})
+}) 
 
 // Start the server
 app.listen(port, () => {
