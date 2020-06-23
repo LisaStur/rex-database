@@ -49,7 +49,7 @@
     "duration": 6,
     "language": "English",
     "synopsis": "This film is a journey through the methods of coping with post-traumatic stress disorder, and an exploration of shame and feelings of disembodiment.",
-    "section": "finnish"
+    "section": "guest"
   },
   {
     "title": "Between the Shadows",
@@ -218,7 +218,7 @@
     "duration": 6,
     "language": "",
     "synopsis": "A documentary story about holocaust survivor Gerda Wunsch, and her early life: as a child escaping from a concentration camp in Poland, the loss of her father Alois, the years of fear and terror spent in hiding – and when the war was over, the return to Vienna.",
-    "section": "austrian"
+    "section": "guest"
   },
   {
     "title": "Guilt",
@@ -296,7 +296,7 @@
     "duration": 2,
     "language": "",
     "synopsis": "",
-    "section": "austrian"
+    "section": "guest"
   },
   {
     "title": "Icebergs",
@@ -348,7 +348,7 @@
     "duration": 3,
     "language": "",
     "synopsis": "Exploring the comedy of daily life by zooming in on self-optimization – and the struggle it entails.",
-    "section": "austrian"
+    "section": "guest"
   },
   {
     "title": "Lanes",
@@ -361,7 +361,7 @@
     "duration": 5,
     "language": "",
     "synopsis": "People pursue their paths: day by day, by choice or by necessity, seeking happiness, finding uncertainty. Where should – can – must we go?",
-    "section": "austrian"
+    "section": "guest"
   },
   {
     "title": "Las del dinte",
@@ -400,7 +400,7 @@
     "duration": 4,
     "language": "English",
     "synopsis": "Against the pressures that go into being a ”good woman” in a patriarchal society, let’s celebrate women who decide to not care.",
-    "section": "finnish"
+    "section": "guest"
   },
   {
     "title": "Masquerade",
@@ -413,7 +413,7 @@
     "duration": 6,
     "language": "",
     "synopsis": "Who are you really beneath all your masks?",
-    "section": "finnish"
+    "section": "guest"
   },
   {
     "title": "Metamorphosis",
@@ -452,7 +452,7 @@
     "duration": 10,
     "language": "",
     "synopsis": "A mom just gave birth. A flood of breast milk covers everything – her home, work, friends, relationship and a good night’s sleep.",
-    "section": "finnish"
+    "section": "guest"
   },
   {
     "title": "Muybridge’s Disobedient Horses",
@@ -465,7 +465,7 @@
     "duration": 4,
     "language": "",
     "synopsis": "What happens when we use everyday situations, objects, spaces and actions as cinematographic mechanisms? Can we find the essence of cinematic illusion when we look into everyday life?",
-    "section": "austrian"
+    "section": "guest"
   },
   {
     "title": "Nest",
@@ -777,6 +777,6 @@
     "duration": 4,
     "language": "German wiht English subtitles",
     "synopsis": "Mrs. Pribil died at the age of 86 in the apartment shown in the film. Right until the end, only her husband’s name was written on the door plate, even though she survived him by many years. A visualization of a poem by Rose Ausländer.",
-    "section": "austrian"
+    "section": "guest"
   }
 ]
