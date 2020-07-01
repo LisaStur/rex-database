@@ -1,7 +1,13 @@
-# Express Starter Project
+# Final Project Technigo Bootcamp 2020
 
-This project includes the packages and babel setup for an express server, and is just meant to make things a little simpler to get up and running with.
+Preparing a new home for Rex Animation festival, a Filmfestival in Stockholm every autumn.
+Currently using the 2019 content to get a picture of how it will work.
 
-## Getting started
+Using Express, Node.js, MongoDB and Mongoose.
 
-Install dependencies with `npm install`, then start the server by running `npm run dev`
+https://rex-database2019.herokuapp.com/movies
+
+For the frontend:
+https://rex-animation-using2019.netlify.app/
+
+
